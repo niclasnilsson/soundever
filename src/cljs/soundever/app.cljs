@@ -6,15 +6,15 @@
 
 (defonce data
   (r/atom
-    {:volume 0
-     ; :volume-stream (range 0 100 5)}))
-     :volume-stream [0 10 20 30 40 nil nil 70 80 90]}))
+    {
+      ; :volume-stream (range 0 100 5)}))
+      :volume-stream [0 10 20 30 40 nil nil 70 80 90]}))
 
 (defn set-volume [player-id volume]
  (let [player (.querySelector js/document player-id)]
    (aset player "volume" (/ volume 100))))
 
-(defn consume-value [coll-name]
+(defn pop-value [coll-name]
   (let [coll (coll-name @data)
         value (first coll)]
     (swap! data assoc coll-name (rest coll))
@@ -22,10 +22,9 @@
 
 (def volume-updater (js/setInterval
                      (fn []
-                       (let [value (consume-value :volume-stream)]
+                       (let [value (pop-value :volume-stream)]
                          (if value
-                           (do
-                             (set-volume "#player1" value)))))
+                           (set-volume "#player1" value))))
                      1000))
 
 (defn slider [param min max value]
