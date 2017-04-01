@@ -4,13 +4,29 @@
 (defn log [message]
   (.log js/console (pr-str message)))
 
+(defonce data
+  (r/atom
+    {:volume 0
+     ; :volume-stream (range 0 100 5)}))
+     :volume-stream [0 10 20 30 40 nil nil 70 80 90]}))
+
 (defn set-volume [player-id volume]
  (let [player (.querySelector js/document player-id)]
    (aset player "volume" (/ volume 100))))
 
-(defonce data
-  (r/atom
-    {:volume 0}))
+(defn consume-value [coll-name]
+  (let [coll (coll-name @data)
+        value (first coll)]
+    (swap! data assoc coll-name (rest coll))
+    value))
+
+(def volume-updater (js/setInterval
+                     (fn []
+                       (let [value (consume-value :volume-stream)]
+                         (if value
+                           (do
+                             (set-volume "#player1" value)))))
+                     1000))
 
 (defn slider [param min max value]
   [:input {:type "range" :min min :max max :defaultValue value
@@ -22,8 +38,8 @@
                (set-volume "#player1" (int (.-target.value e))))}])
 
 (defn audio-player []
-  [:audio {:id :player1 :autoPlay false :controls true}
-    [:source {:src "https://arthead.io/sounds/crow.mp3"}]])
+  [:audio {:id :player1 :autoPlay true :controls true}
+    [:source {:src "https://arthead.io/sounds/CafeJazz.mp3"}]])
 
 (defn app-view []
   (let [volume (:volume @data)]
