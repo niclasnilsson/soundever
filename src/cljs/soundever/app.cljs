@@ -83,16 +83,6 @@
 (defn init []
   (r/render-component [app-view]
                       (.getElementById js/document "container")))
-  ;(set-volume "player1" 0)
-  ;(set-volume "player2" 0))
+  ; TODO Mute all players on load
 
 (setup-system config)
-
-; (defn slider [param min max value]
-;   [:input {:type "range" :min min :max max :defaultValue value
-;            :style {:width "100%"}
-;            :on-change
-;              (fn [e]
-;                ; TODO: Är det här rätt tänkt?
-;                (swap! data assoc param (int (.-target.value e)))
-;                (set-volume "#player1" (int (.-target.value e))))}])
