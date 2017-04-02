@@ -38,7 +38,7 @@
     value))
 
 (defn percent [min max value]
-  (Math/min (/ value (- max min)) 1.0))
+  (Math/max (Math/min (/ value (- max min)) 1.0) min))
 
 (defn update-volume [stream-id player-id min max]
   (fn [value]
