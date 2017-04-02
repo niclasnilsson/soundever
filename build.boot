@@ -11,7 +11,9 @@
                  [org.clojure/clojurescript "1.9.293"]
                  [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]
                  [reagent "0.6.0"]
-                 [org.martinklepsch/boot-garden "1.3.2-0" :scope "test"]])
+                 [org.martinklepsch/boot-garden "1.3.2-0" :scope "test"]
+                 [proto-repl "0.3.1"]
+                 [proto-repl-charts "0.3.2"]])
 
 (require
  '[adzerk.boot-cljs      :refer [cljs]]
@@ -23,17 +25,17 @@
 
 (deftask build []
   (comp (speak)
-        
+
         (cljs)
-        
+
         (garden :styles-var 'soundever.styles/screen
-:output-to "css/garden.css")))
+         :output-to "css/garden.css")))
 
 (deftask run []
   (comp (serve)
         (watch)
         (cljs-repl)
-        
+
         (reload)
         (build)))
 
