@@ -78,9 +78,7 @@
   (let [volume (:volume @data)]
     [:div
      [:h3 (str "Volume is " volume)]
-     (map
-       #(player (str "player" %) "https://arthead.io/sounds/CafeJazz.mp3")
-       (range 1 3))]))
+     (players config)]))
 
 (defn init []
   (r/render-component [app-view]
