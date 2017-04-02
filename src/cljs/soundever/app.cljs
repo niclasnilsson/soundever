@@ -25,7 +25,6 @@
   (r/atom
     {
       :traffic-load-stream    [0 10 20 30 40 50 60 70 80 90]
-      ; :traffic-load-stream    [0 100 200 300 400 1000 1500]
       :number-of-users-stream [0 100 120 100 120 300 600 700]}))
 
 (defn set-volume [player-id percent]
@@ -48,14 +47,7 @@
       (if value
         (set-volume player-id (percent min max value))))))
 
-; Timers
-; (def timer-update-volume
-;   (js/setInterval
-;     (update-volume :traffic-load-stream "#player1", 0 200)
-;     1000))
-
 (defn create-timer [f interval]
-  (log "Creating timer..")
   (js/setInterval f interval))
 
 (defn kw [s]
@@ -69,7 +61,6 @@
         interval (:sample-rate config)
         update-fn (update-volume stream-id player-id min max)]
     (create-timer update-fn interval)))
-
 
 (defn setup-system [config]
   (doseq [[name stream-config] config]
