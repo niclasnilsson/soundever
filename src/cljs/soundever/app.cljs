@@ -42,7 +42,6 @@
 
 (defn update-volume [stream-id player-id min max]
   (fn [value]
-    (log (str "Setting volume to " value " on " player-id))
     (let [value (pop-value stream-id)]
       (if value
         (set-volume player-id (percent min max value))))))
@@ -54,13 +53,10 @@
   (keyword (subs s 1)))
 
 (defn setup-stream [name config]
-  (let [stream-id (kw (str name "-stream"))
-        player-id (:player-id config)
-        min (:min config)
-        max (:max config)
-        interval (:sample-rate config)
+  (let [{:keys [player-id min max sample-rate]} config
+        stream-id (kw (str name "-stream"))
         update-fn (update-volume stream-id player-id min max)]
-    (create-timer update-fn interval)))
+    (create-timer update-fn sample-rate)))
 
 (defn setup-system [config]
   (doseq [[name stream-config] config]
@@ -85,7 +81,7 @@
      [:h3 (str "Volume is " volume)]
      (map
        #(player (str "player" %) "https://arthead.io/sounds/CafeJazz.mp3")
-       (range 1 11))]))
+       (range 1 3))]))
 
 (defn init []
   (r/render-component [app-view]
