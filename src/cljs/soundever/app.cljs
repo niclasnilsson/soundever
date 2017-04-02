@@ -71,7 +71,7 @@
     [:source {:src src}]])
 
 (defn player [player-id source]
-  [:div
+  [:div {:key player-id}
    (audio-player player-id source)])
 
 (defn players [config]
