@@ -49,13 +49,12 @@
 (defn create-timer [f interval]
   (js/setInterval f interval))
 
-(defn kw [s]
-  (keyword (subs s 1)))
+(defn stream-id [stream-name]
+  (keyword (str (name stream-name) "-stream")))
 
-(defn setup-stream [name config]
+(defn setup-stream [stream-name config]
   (let [{:keys [player-id min max sample-rate]} config
-        stream-id (kw (str name "-stream"))
-        update-fn (update-volume stream-id player-id min max)]
+        update-fn (update-volume (stream-id stream-name) player-id min max)]
     (create-timer update-fn sample-rate)))
 
 (defn setup-system [config]
